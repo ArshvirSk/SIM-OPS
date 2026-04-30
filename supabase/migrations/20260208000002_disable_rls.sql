@@ -1,0 +1,13 @@
+-- Disable RLS for all tables (for development/demo purposes)
+-- In production, you should enable RLS and create proper policies
+
+ALTER TABLE agents DISABLE ROW LEVEL SECURITY;
+ALTER TABLE agent_configs DISABLE ROW LEVEL SECURITY;
+ALTER TABLE agent_decisions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE agent_metrics DISABLE ROW LEVEL SECURITY;
+ALTER TABLE agent_communications DISABLE ROW LEVEL SECURITY;
+ALTER TABLE workflows DISABLE ROW LEVEL SECURITY;
+ALTER TABLE workflow_runs DISABLE ROW LEVEL SECURITY;
+ALTER TABLE predictions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE activity_logs DISABLE ROW LEVEL SECURITY;
+ALTER TABLE risk_alerts DISABLE ROW LEVEL SECURITY;

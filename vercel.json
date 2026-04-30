@@ -1,0 +1,16 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/predictions",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/anomalies",
+      "schedule": "0 */4 * * *"
+    },
+    {
+      "path": "/api/cron/weekly-report",
+      "schedule": "0 9 * * 1"
+    }
+  ]
+}
