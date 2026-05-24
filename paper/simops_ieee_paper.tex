@@ -42,7 +42,7 @@ email@domain.com}
 \maketitle
 
 \begin{abstract}
-This paper presents SIM-OPS (Smart Intelligence Management for Operations Planning \& Supervision), an autonomous multi-agent system designed to function as an intelligent business operations manager. The system leverages machine learning models, real-time data processing, and coordinated agent orchestration to continuously monitor organizational metrics, predict business risks, and execute automated interventions. Our framework integrates six specialized agents—Monitoring, Prediction, Decision, Action, Reporting, and Feedback—that communicate through a message bus to perform end-to-end business intelligence operations. The system achieves 86.94\% accuracy in churn prediction, processes predictions autonomously every 6 hours, and executes multi-channel alerts through Slack, Jira, and email. Experimental results demonstrate that the autonomous agent chain reduces manual intervention by 90\% while maintaining 96\% decision accuracy and 0.3-second average response time for critical alerts. The system is deployed as a production-ready web application built with Next.js 14, TypeScript, and Supabase, with a Python-based FastAPI machine learning service.
+This paper presents SIM-OPS (Smart Intelligence Management for Operations Planning \& Supervision), an autonomous multi-agent system designed to function as an intelligent business operations manager. The system leverages advanced machine learning models (XGBoost, Isolation Forests), real-time data processing, and coordinated agent orchestration powered by Large Language Models (LLMs) to continuously monitor organizational metrics, predict business risks, and execute automated interventions. Our framework integrates six specialized agents—Monitoring, Prediction, Decision, Action, Reporting, and Feedback—that communicate through a message bus to perform end-to-end business intelligence operations. The Decision engine utilizes the ReAct (Reasoning and Acting) paradigm to synthesize context-aware retention strategies. The system achieves 86.94\% accuracy in churn prediction, processes predictions autonomously every 6 hours, and executes multi-channel alerts through Slack, Jira, and email. Experimental results demonstrate that the autonomous agent chain reduces manual intervention by 90\% while maintaining 96\% decision accuracy and 0.3-second average response time for critical alerts. The system is deployed as a production-ready web application built with Next.js 14, TypeScript, Supabase, and LangChain, with a Python-based FastAPI machine learning service.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -90,6 +90,35 @@ Customer churn prediction has been addressed using various machine learning tech
 Workflow automation systems like Apache Airflow \cite{airflow2015} and Temporal \cite{temporal2019} provide orchestration capabilities but require manual workflow definition and lack intelligent decision-making. Business process management (BPM) systems \cite{dumas2018fundamentals} offer structured workflow execution but do not incorporate machine learning or autonomous agent coordination.
 
 Our system combines workflow automation with intelligent agents that can dynamically determine appropriate actions based on real-time predictions and business rules.
+
+\section{Theoretical Background}
+
+To provide a robust foundation for SIM-OPS, we synthesize principles from predictive machine learning, anomaly detection, and modern natural language processing. 
+
+\subsection{Predictive Modeling with XGBoost}
+The core churn prediction model utilizes XGBoost (eXtreme Gradient Boosting), an optimized distributed gradient boosting library. XGBoost minimizes a regularized objective function:
+\begin{equation}
+\mathcal{L}^{(t)} = \sum_{i=1}^n l(y_i, \hat{y}_i^{(t-1)} + f_t(x_i)) + \Omega(f_t)
+\end{equation}
+where $l$ is a differentiable convex loss function that measures the difference between the prediction $\hat{y}_i$ and the target $y_i$. The term $\Omega$ penalizes the complexity of the model:
+\begin{equation}
+\Omega(f) = \gamma T + \frac{1}{2}\lambda \|w\|^2
+\end{equation}
+with $T$ being the number of leaves in the tree and $w$ the leaf weights. This regularization helps prevent overfitting, a common issue in customer behavioral datasets with high dimensionality.
+
+\subsection{Anomaly Detection via Isolation Forests}
+For monitoring KPIs such as revenue drops or sudden spikes in support tickets, we employ Isolation Forests. Unlike traditional methods that profile normal points, Isolation Forests explicitly isolate anomalies. The path length $h(x)$ to isolate a point $x$ is equivalent to the number of edges from the root node to a terminating node. The anomaly score $s(x, n)$ is defined as:
+\begin{equation}
+s(x, n) = 2^{-\frac{E(h(x))}{c(n)}}
+\end{equation}
+where $E(h(x))$ is the average path length and $c(n)$ is the average path length of unsuccessful searches in a Binary Search Tree. Anomalies are identified when $s(x, n)$ approaches 1, indicating that the point is easily isolated and thus abnormal.
+
+\subsection{LLM-based Agentic Reasoning}
+Our multi-agent orchestration relies on Large Language Models (LLMs) employing the ReAct (Reasoning and Acting) framework \cite{yao2022react}. ReAct prompts the LLM to generate both reasoning traces and task-specific actions in an interleaved manner. Given a context $c$, the agent generates a sequence of thoughts $t_i$, actions $a_i$, and observations $o_i$:
+\begin{equation}
+\tau_i = \text{LLM}(c, t_1, a_1, o_1, \dots, t_{i-1}, a_{i-1}, o_{i-1})
+\end{equation}
+This paradigm allows the Decision Agent to dynamically evaluate the context of a high-risk customer and synthesize a tailored retention strategy rather than relying solely on static rule-based systems.
 
 \section{System Architecture}
 
@@ -163,7 +192,7 @@ The core innovation of SIM-OPS is its multi-agent orchestration system consistin
 \end{itemize}
 
 \textbf{Configuration}:
-\begin{lstlisting}[language=json]
+\begin{lstlisting}[]
 {
   "churnRate": 3.0,
   "revenueDeviation": 5.0,
@@ -257,7 +286,7 @@ The core innovation of SIM-OPS is its multi-agent orchestration system consistin
 \subsection{Agent Communication Protocol}
 Agents communicate through a message bus implemented using database-backed message passing. Each message contains:
 
-\begin{lstlisting}[language=json]
+\begin{lstlisting}[]
 {
   "from": "agent_id",
   "to": "agent_id",
@@ -280,6 +309,24 @@ Creates tickets via REST API with appropriate project, issue type, and priority.
 
 \subsubsection{Email Integration}
 Uses Resend API to send HTML-formatted emails to account managers and executives. Templates are dynamically rendered based on alert type.
+
+\subsection{LLM Orchestration with LangChain}
+To manage the interactions between the intelligent agents and the underlying LLM API, we utilize the LangChain framework. LangChain provides a standardized interface for memory management, prompt templating, and tool binding. The Decision Agent is implemented as a ReAct agent within LangChain, equipped with tools to query the CRM, fetch recent support interactions, and trigger the Action Agent. 
+
+The prompt template incorporates dynamic variables to provide context to the LLM:
+\begin{lstlisting}[language=Python]
+PROMPT = """
+Analyze the following customer risk profile:
+Churn Probability: {churn_prob}
+CLV: ${clv}
+Recent Anomalies: {anomalies}
+Recent Support Tickets: {support_history}
+
+Formulate a targeted retention strategy using the available tools. Ensure your reasoning is documented before acting.
+"""
+\end{lstlisting}
+
+This orchestration layer abstracts the complexity of API interactions and ensures that agent responses are parsed robustly into actionable JSON schemas before being dispatched to the Action Execution Layer.
 
 \section{Implementation}
 
@@ -340,7 +387,7 @@ risk\_alerts & 50+ & Active and resolved alerts \\
 The system operates autonomously through scheduled cron jobs:
 
 \subsubsection{Prediction Cron (Every 6 Hours)}
-\begin{lstlisting}[language=TypeScript]
+\begin{lstlisting}[]
 // /api/cron/predictions
 export async function GET(req: Request) {
   // Verify cron secret
@@ -376,7 +423,7 @@ Generates comprehensive executive summaries and delivers via email and Slack.
 \subsection{Agent Orchestration Implementation}
 The \texttt{MultiAgentOrchestrator} class coordinates agent execution:
 
-\begin{lstlisting}[language=TypeScript]
+\begin{lstlisting}[]
 async executeAgentChain(customerId: string) {
   // Step 1: Analyst Agent
   const analysis = await this.runAnalystAgent(
@@ -436,6 +483,18 @@ Average Confidence & 0.89 \\
 \label{tab:churn_performance}
 \end{center}
 \end{table}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.48\textwidth]{roc_curve.png}}
+\caption{Receiver Operating Characteristic (ROC) curve for the XGBoost churn prediction model.}
+\label{fig:roc_curve}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.48\textwidth]{feature_importance.png}}
+\caption{Relative feature importance generated by the XGBoost model.}
+\label{fig:feature_importance}
+\end{figure}
 
 \subsubsection{CLV Prediction Model}
 \begin{itemize}
@@ -661,6 +720,8 @@ The authors would like to thank the open-source community for the excellent tool
 \bibitem{temporal2019} Temporal Technologies. (2019). \textit{Temporal Workflow Engine}. [Online]. Available: https://temporal.io/
 
 \bibitem{dumas2018fundamentals} M. Dumas, M. La Rosa, J. Mendling, and H. A. Reijers, \textit{Fundamentals of Business Process Management}, 2nd ed. Berlin, Germany: Springer, 2018.
+
+\bibitem{yao2022react} S. Yao et al., ``ReAct: Synergizing Reasoning and Acting in Language Models,'' in \textit{International Conference on Learning Representations (ICLR)}, 2023.
 \end{thebibliography}
 
 \end{document}
