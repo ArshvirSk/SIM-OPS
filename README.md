@@ -1,6 +1,6 @@
 <div align="center">
   <!-- Banner Placeholder -->
-  <img src="/public/readme/banner.png" alt="SIM-OPS Banner" width="100%" />
+  <img src="/readme/banner.png" alt="SIM-OPS Banner" width="100%" />
 
   # SIM-OPS
   
