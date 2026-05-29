@@ -31,7 +31,9 @@ export default function LandingPage() {
     }, 1800);
 
     const revenueTimer = setInterval(() => {
-      setRevenueAtRisk((value) => value + Math.floor(Math.random() * 1200 + 350));
+      setRevenueAtRisk(
+        (value) => value + Math.floor(Math.random() * 1200 + 350),
+      );
     }, 950);
 
     return () => {
@@ -94,9 +96,11 @@ export default function LandingPage() {
                 Stop churn before it starts
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-                SIM-OPS predicts customer churn in real time and triggers retention playbooks before risk turns into loss.
+                SIM-OPS predicts customer churn in real time and triggers
+                retention playbooks before risk turns into loss.
                 <span className="mt-2 block text-muted-foreground">
-                  Monitor telemetry, forecast outcomes, and let AI agents execute across your stack.
+                  Monitor telemetry, forecast outcomes, and let AI agents
+                  execute across your stack.
                 </span>
               </p>
               <div className="mt-8">
@@ -117,16 +121,23 @@ export default function LandingPage() {
                 <div className="ambient" />
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Live Churn Radar</p>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                      Live Churn Radar
+                    </p>
                     <div className="mt-4 space-y-3">
                       {riskBars.map((bar, idx) => (
                         <div key={idx}>
                           <div className="mb-1 flex items-center justify-between text-xs text-muted-foreground">
                             <span>{`Segment ${idx + 1}`}</span>
-                            <span className="text-destructive">{bar}% risk</span>
+                            <span className="text-destructive">
+                              {bar}% risk
+                            </span>
                           </div>
                           <div className="risk-track">
-                            <div className="risk-bar" style={{ width: `${bar}%` }} />
+                            <div
+                              className="risk-bar"
+                              style={{ width: `${bar}%` }}
+                            />
                           </div>
                         </div>
                       ))}
@@ -135,24 +146,38 @@ export default function LandingPage() {
 
                   <div className="mt-4 grid grid-cols-2 gap-4">
                     <div className="rounded-lg border-2 border-border bg-secondary p-3">
-                      <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Agent Status</p>
+                      <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                        Agent Status
+                      </p>
                       <div className="mt-2 flex items-center gap-2">
                         <span className="pip pulse" />
-                        <span className="text-xs text-foreground">Monitor: Active</span>
+                        <span className="text-xs text-foreground">
+                          Monitor: Active
+                        </span>
                       </div>
                       <div className="mt-1 flex items-center gap-2">
                         <span className="pip pulse" />
-                        <span className="text-xs text-foreground">Predict: Active</span>
+                        <span className="text-xs text-foreground">
+                          Predict: Active
+                        </span>
                       </div>
                       <div className="mt-1 flex items-center gap-2">
                         <span className="pip inactive" />
-                        <span className="text-xs text-muted-foreground">Act: Standby</span>
+                        <span className="text-xs text-muted-foreground">
+                          Act: Standby
+                        </span>
                       </div>
                     </div>
                     <div className="rounded-lg border-2 border-border bg-secondary p-3">
-                      <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Revenue At Risk</p>
-                      <p className="revenue mt-2 text-destructive">${formattedRevenue}</p>
-                      <p className="mt-1 text-[11px] text-muted-foreground">live telemetry stream</p>
+                      <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                        Revenue At Risk
+                      </p>
+                      <p className="revenue mt-2 text-destructive">
+                        ${formattedRevenue}
+                      </p>
+                      <p className="mt-1 text-[11px] text-muted-foreground">
+                        live telemetry stream
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -161,28 +186,55 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="pipeline" className="border-b-2 border-border px-6 py-16 bg-card/40 scroll-mt-24">
+        <section
+          id="pipeline"
+          className="border-b-2 border-border px-6 py-16 bg-card/40 scroll-mt-24"
+        >
           <div className="mx-auto w-full max-w-7xl">
-            <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">Autonomous Agent Pipeline</h2>
+            <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">
+              Autonomous Agent Pipeline
+            </h2>
             <div className="pipeline overflow-x-auto pb-2">
               <div className="node group">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Monitor</p>
-                <p className="details mt-2 text-sm text-muted-foreground">Tracks telemetry and anomalies across all customers.</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Monitor
+                </p>
+                <p className="details mt-2 text-sm text-muted-foreground">
+                  Tracks telemetry and anomalies across all customers.
+                </p>
               </div>
-              <div className="connector hidden md:block"><span className="dot" /></div>
-              <div className="node group">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Predict</p>
-                <p className="details mt-2 text-sm text-muted-foreground">Runs churn and CLV models to score customer risk.</p>
+              <div className="connector hidden md:block">
+                <span className="dot" />
               </div>
-              <div className="connector hidden md:block"><span className="dot" /></div>
               <div className="node group">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Decide</p>
-                <p className="details mt-2 text-sm text-muted-foreground">Selects best retention strategy per account context.</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Predict
+                </p>
+                <p className="details mt-2 text-sm text-muted-foreground">
+                  Runs churn and CLV models to score customer risk.
+                </p>
               </div>
-              <div className="connector hidden md:block"><span className="dot" /></div>
+              <div className="connector hidden md:block">
+                <span className="dot" />
+              </div>
               <div className="node group">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Act</p>
-                <p className="details mt-2 text-sm text-muted-foreground">Executes workflows across alerts, tickets, and outreach.</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Decide
+                </p>
+                <p className="details mt-2 text-sm text-muted-foreground">
+                  Selects best retention strategy per account context.
+                </p>
+              </div>
+              <div className="connector hidden md:block">
+                <span className="dot" />
+              </div>
+              <div className="node group">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Act
+                </p>
+                <p className="details mt-2 text-sm text-muted-foreground">
+                  Executes workflows across alerts, tickets, and outreach.
+                </p>
               </div>
             </div>
           </div>
@@ -190,37 +242,67 @@ export default function LandingPage() {
 
         <section id="features" className="px-6 py-16 scroll-mt-24">
           <div className="mx-auto w-full max-w-7xl">
-            <h2 className="mb-8 text-2xl font-bold md:text-3xl">Built For High-Risk Retention Ops</h2>
+            <h2 className="mb-8 text-2xl font-bold md:text-3xl">
+              Built For High-Risk Retention Ops
+            </h2>
             <div className="bento">
               <div className="big">
-                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Model Confidence</p>
+                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  Model Confidence
+                </p>
                 <div className="mt-4 flex items-end gap-3">
                   <p className="text-6xl font-extrabold md:text-7xl">&gt;85%</p>
-                  <p className="mb-2 text-muted-foreground">churn prediction accuracy on benchmark datasets</p>
+                  <p className="mb-2 text-muted-foreground">
+                    churn prediction accuracy on benchmark datasets
+                  </p>
                 </div>
-                <p className="mt-3 max-w-2xl text-sm text-muted-foreground">Powered by Random Forest and anomaly detection tuned for SaaS customer behavior signals.</p>
+                <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+                  Powered by Random Forest and anomaly detection tuned for SaaS
+                  customer behavior signals.
+                </p>
               </div>
               <div className="rounded-xl border-2 border-border bg-card p-5">
                 <p className="mb-3 text-sm font-semibold">Integrations</p>
                 <div className="chips">
-                  <span className="chip"><MessageSquare className="h-4 w-4" /> Slack</span>
-                  <span className="chip"><Ticket className="h-4 w-4" /> Jira</span>
-                  <span className="chip"><Mail className="h-4 w-4" /> Email</span>
-                  <span className="chip"><PhoneCall className="h-4 w-4" /> Twilio</span>
+                  <span className="chip">
+                    <MessageSquare className="h-4 w-4" /> Slack
+                  </span>
+                  <span className="chip">
+                    <Ticket className="h-4 w-4" /> Jira
+                  </span>
+                  <span className="chip">
+                    <Mail className="h-4 w-4" /> Email
+                  </span>
+                  <span className="chip">
+                    <PhoneCall className="h-4 w-4" /> Twilio
+                  </span>
                 </div>
               </div>
               <div className="rounded-xl border-2 border-border bg-card p-5">
-                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Risk Indicators</p>
-                <p className="mt-3 text-sm text-muted-foreground">Danger states are highlighted with <span className="font-semibold text-destructive">destructive</span> to surface churn escalation instantly.</p>
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  Risk Indicators
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Danger states are highlighted with{" "}
+                  <span className="font-semibold text-destructive">
+                    destructive
+                  </span>{" "}
+                  to surface churn escalation instantly.
+                </p>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer id="access" className="relative z-10 footer-cta border-t-2 border-border bg-card scroll-mt-24">
+      <footer
+        id="access"
+        className="relative z-10 footer-cta border-t-2 border-border bg-card scroll-mt-24"
+      >
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
-          <p className="text-sm text-muted-foreground">Ready to prevent churn before it starts?</p>
+          <p className="text-sm text-muted-foreground">
+            Ready to prevent churn before it starts?
+          </p>
           <Button className="border-0 bg-primary text-primary-foreground hover:bg-primary/90">
             Request Access
             <ChevronRight className="ml-1.5 h-4 w-4" />
