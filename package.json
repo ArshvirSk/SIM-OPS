@@ -1,6 +1,10 @@
 {
-  "name": "simops",
-  "version": "0.1.0",
+  "name": "sim-ops",
+  "version": "1.0.0",
+  "description": "Smart Intelligence Management for Operations Planning & Supervision - An autonomous AI-powered platform for predicting churn and executing retention actions.",
+  "author": "Full-Stack + AI Developer",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/sim-ops#readme",
   "private": true,
   "scripts": {
     "dev": "next dev",

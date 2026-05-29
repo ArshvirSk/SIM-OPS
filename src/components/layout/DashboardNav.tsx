@@ -27,7 +27,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { id: "overview", label: "Overview", icon: LayoutDashboard, path: "/" },
+  { id: "overview", label: "Overview", icon: LayoutDashboard, path: "/dashboard" },
   {
     id: "workflows",
     label: "Workflows",
@@ -87,8 +87,8 @@ export function DashboardNav({ activeTab, onTabChange }: DashboardNavProps) {
     if (activeTab) {
       return activeTab === item.id;
     }
-    if (item.path === "/") {
-      return pathname === "/";
+    if (item.path === "/dashboard") {
+      return pathname === "/dashboard";
     }
     return pathname.startsWith(item.path);
   };

@@ -8,7 +8,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{listings}
 \usepackage{booktabs}
 \usepackage{multirow}
@@ -17,10 +17,13 @@
 \lstset{
   basicstyle=\ttfamily\footnotesize,
   breaklines=true,
-  frame=single,
   language=Python,
   showstringspaces=false
 }
+
+% Image border settings
+\setlength{\fboxsep}{0pt}
+\setlength{\fboxrule}{0.5pt}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -204,8 +207,20 @@ Uses Prophet time-series model to generate 30-day revenue forecasts with confide
 
 All models are pre-trained and stored as pickle files, loaded on-demand for inference. The service exposes RESTful API endpoints for predictions.
 
+\begin{figure}[htbp]
+\centerline{\fbox{\includegraphics[width=0.47\textwidth]{predictions.png}}}
+\caption{Predictive Analytics Interface displaying Machine Learning predictions and Churn risk distribution.}
+\label{fig:predictions_ui}
+\end{figure}
+
 \subsection{Multi-Agent Orchestration Layer}
-The core innovation of SIM-OPS is its multi-agent orchestration system consisting of six specialized agents:
+The core innovation of SIM-OPS is its multi-agent orchestration system consisting of six specialized agents. The live operational status, active workflows, and agent execution statistics are monitored via a unified dashboard as shown in Figure \ref{fig:agents_portal}.
+
+\begin{figure}[htbp]
+\centerline{\fbox{\includegraphics[width=0.47\textwidth]{agents.png}}}
+\caption{Autonomous Multi-Agent Monitoring and Configuration Portal.}
+\label{fig:agents_portal}
+\end{figure}
 
 \subsubsection{Monitoring Agent}
 \textbf{Role}: KPI deviation detection and threshold monitoring
@@ -259,6 +274,14 @@ The core innovation of SIM-OPS is its multi-agent orchestration system consistin
 \item \textbf{Medium}: Churn >60\% AND worsening trend
 \item \textbf{Low}: All other cases
 \end{itemize}
+
+Figure \ref{fig:customer_detail} illustrates the Customer Detail view integrated with the Decision Agent's reasoning panel, displaying contributing features alongside the generated retention strategy.
+
+\begin{figure}[htbp]
+\centerline{\fbox{\includegraphics[width=0.47\textwidth]{customer-detail.png}}}
+\caption{Customer Risk Profile and LLM-based Decision Reasoning Interface.}
+\label{fig:customer_detail}
+\end{figure}
 
 \subsubsection{Action Agent}
 \textbf{Role}: Workflow execution and automation triggers
@@ -367,6 +390,14 @@ This orchestration layer abstracts the complexity of API interactions and ensure
 \item \textbf{State Management}: TanStack React Query for server state
 \item \textbf{Charts}: Recharts for data visualization
 \end{itemize}
+
+The resulting user interface is a responsive, real-time dashboard displaying key business metrics, recent activities, and agent status logs (see Figure \ref{fig:dashboard}).
+
+\begin{figure}[htbp]
+\centerline{\fbox{\includegraphics[width=0.47\textwidth]{dashboard.png}}}
+\caption{SIM-OPS Real-Time Operations and KPI Monitoring Dashboard.}
+\label{fig:dashboard}
+\end{figure}
 
 \subsubsection{Database}
 \begin{itemize}
