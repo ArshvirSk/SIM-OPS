@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { RealtimeIndicator } from "@/components/ui/realtime-indicator";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/hooks/useAuth";
+import { RealtimeIndicator } from "@/components/ui/realtime-indicator";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { Bell, LogOut, RefreshCw, Settings } from "lucide-react";
 import Image from "next/image";
 
@@ -30,7 +30,8 @@ export function DashboardHeader({
   const handleNotifications = () => {
     toast({
       title: "System Notifications",
-      description: "You have 3 automated actions pending review in the Action Agent queue.",
+      description:
+        "You have 3 automated actions pending review in the Action Agent queue.",
     });
   };
 
@@ -79,9 +80,9 @@ export function DashboardHeader({
             />
           </Button>
 
-          <Button 
-            variant="outline" 
-            size="icon" 
+          <Button
+            variant="outline"
+            size="icon"
             className="border-2 relative"
             onClick={handleNotifications}
           >

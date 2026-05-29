@@ -1,117 +1,231 @@
-import Link from "next/link";
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Bot, LineChart, ShieldCheck, ArrowRight, Github } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronRight,
+  Circle,
+  Mail,
+  MessageSquare,
+  PhoneCall,
+  Ticket,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import logo from "../../public/simops-logo.png";
+import "./landing.css";
 
 export default function LandingPage() {
+  const [riskBars, setRiskBars] = useState([72, 48, 89]);
+  const [revenueAtRisk, setRevenueAtRisk] = useState(127400);
+
+  useEffect(() => {
+    const barTimer = setInterval(() => {
+      setRiskBars((prev) =>
+        prev.map((value) => {
+          const jitter = Math.floor(Math.random() * 18) - 9;
+          return Math.min(96, Math.max(22, value + jitter));
+        }),
+      );
+    }, 1800);
+
+    const revenueTimer = setInterval(() => {
+      setRevenueAtRisk((value) => value + Math.floor(Math.random() * 1200 + 350));
+    }, 950);
+
+    return () => {
+      clearInterval(barTimer);
+      clearInterval(revenueTimer);
+    };
+  }, []);
+
+  const formattedRevenue = useMemo(
+    () => new Intl.NumberFormat("en-US").format(revenueAtRisk),
+    [revenueAtRisk],
+  );
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50 selection:bg-indigo-500/30 flex flex-col">
-      <header className="px-6 py-6 border-b border-white/5 flex items-center justify-between sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-indigo-500 flex items-center justify-center">
-            <Bot className="text-white w-5 h-5" />
+    <div className="relative isolate min-h-screen bg-[#F4F6FB] text-foreground selection:bg-primary/20 flex flex-col">
+      <div className="landing-bg-grid" />
+      <header className="sticky top-0 z-50 border-b-2 border-border bg-card/95 px-6 py-4 backdrop-blur-md">
+        <div className="mx-auto flex w-full max-w-7xl items-center">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded flex items-center justify-center">
+              <Image src={logo} alt="SIM-OPS Logo" />
+            </div>
+            <span className="font-bold text-lg tracking-tight">SIM-OPS</span>
           </div>
-          <span className="font-bold text-lg tracking-tight">SIM-OPS</span>
+
+          <nav className="ml-auto hidden items-center gap-6 md:flex">
+            <Link
+              href="#pipeline"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Pipeline
+            </Link>
+            <Link
+              href="#features"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Features
+            </Link>
+            <Link
+              href="#access"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Access
+            </Link>
+          </nav>
         </div>
-        <nav className="flex items-center gap-4">
-          <Link href="https://github.com/yourusername/sim-ops" target="_blank" rel="noreferrer">
-            <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/10 hidden sm:flex">
-              <Github className="w-4 h-4 mr-2" />
-              GitHub
-            </Button>
-          </Link>
-          <Link href="/dashboard">
-            <Button size="sm" className="bg-indigo-500 hover:bg-indigo-400 text-white border-0">
-              Live Demo
-            </Button>
-          </Link>
-        </nav>
       </header>
 
-      <main className="flex-1 flex flex-col">
-        {/* Hero Section */}
-        <section className="relative px-6 py-24 md:py-32 flex flex-col items-center text-center overflow-hidden">
-          {/* Background effects */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+      <main className="relative z-10 flex-1 flex flex-col">
+        <section className="relative overflow-hidden px-6 pb-16 pt-20 md:pb-24 md:pt-28 border-b-2 border-border">
+          <div className="pointer-events-none absolute right-0 top-0 h-[380px] w-[420px] rounded-full bg-primary/20 blur-[120px]" />
 
-          <div className="relative z-10 max-w-4xl mx-auto space-y-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-4">
-              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
-              v0.1.0 — Autonomous Agents Online
+          <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 md:grid-cols-2">
+            <div>
+              <p className="mb-4 inline-flex items-center gap-2 rounded-full border-2 border-border bg-secondary px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                <Circle className="h-2.5 w-2.5 fill-emerald-500 text-emerald-500" />
+                Autonomous Agents Online
+              </p>
+              <h1 className="text-balance text-5xl font-extrabold leading-[1.05] md:text-7xl">
+                Stop churn before it starts
+              </h1>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl">
+                SIM-OPS predicts customer churn in real time and triggers retention playbooks before risk turns into loss.
+                <span className="mt-2 block text-muted-foreground">
+                  Monitor telemetry, forecast outcomes, and let AI agents execute across your stack.
+                </span>
+              </p>
+              <div className="mt-8">
+                <Link href="/dashboard">
+                  <Button
+                    size="lg"
+                    className="h-12 border-0 bg-primary px-8 text-primary-foreground shadow-[0_0_36px_color-mix(in_oklab,var(--primary)_35%,transparent)] hover:bg-primary/90"
+                  >
+                    Launch Command Center
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
             </div>
-            
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-white to-slate-400">
-              Stop Churn Before <br className="hidden md:block" /> It Happens.
-            </h1>
-            
-            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-              Autonomous AI that predicts churn, forecasts revenue, and executes retention workflows before it's too late. 
-              <span className="text-slate-300 font-medium block mt-2"> Smart Intelligence Management for Operations Planning & Supervision.</span>
-            </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Link href="/dashboard">
-                <Button size="lg" className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-400 text-white font-medium px-8 h-12">
-                  Launch Demo <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="https://github.com/yourusername/sim-ops" target="_blank" rel="noreferrer">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 border-slate-700 bg-slate-800/50 hover:bg-slate-800 text-slate-200 hover:text-white">
-                  <Github className="mr-2 w-4 h-4" /> View Source
-                </Button>
-              </Link>
+            <div className="flex justify-center md:justify-end">
+              <div className="mockup">
+                <div className="ambient" />
+                <div className="relative z-10 flex h-full flex-col justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Live Churn Radar</p>
+                    <div className="mt-4 space-y-3">
+                      {riskBars.map((bar, idx) => (
+                        <div key={idx}>
+                          <div className="mb-1 flex items-center justify-between text-xs text-muted-foreground">
+                            <span>{`Segment ${idx + 1}`}</span>
+                            <span className="text-destructive">{bar}% risk</span>
+                          </div>
+                          <div className="risk-track">
+                            <div className="risk-bar" style={{ width: `${bar}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    <div className="rounded-lg border-2 border-border bg-secondary p-3">
+                      <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Agent Status</p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <span className="pip pulse" />
+                        <span className="text-xs text-foreground">Monitor: Active</span>
+                      </div>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="pip pulse" />
+                        <span className="text-xs text-foreground">Predict: Active</span>
+                      </div>
+                      <div className="mt-1 flex items-center gap-2">
+                        <span className="pip inactive" />
+                        <span className="text-xs text-muted-foreground">Act: Standby</span>
+                      </div>
+                    </div>
+                    <div className="rounded-lg border-2 border-border bg-secondary p-3">
+                      <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Revenue At Risk</p>
+                      <p className="revenue mt-2 text-destructive">${formattedRevenue}</p>
+                      <p className="mt-1 text-[11px] text-muted-foreground">live telemetry stream</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Feature Highlights */}
-        <section className="px-6 py-24 bg-slate-900/50 border-t border-white/5 relative z-10 flex-1">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              
-              {/* Feature 1 */}
-              <div className="bg-slate-800/40 border border-white/5 p-8 rounded-2xl flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <LineChart className="w-6 h-6 text-emerald-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white">ML-Powered Predictions</h3>
-                <p className="text-slate-400 leading-relaxed text-sm">
-                  Accurate forecasting for customer churn and lifetime value. 
-                  Identify at-risk accounts early using Random Forest models.
-                </p>
+        <section id="pipeline" className="border-b-2 border-border px-6 py-16 bg-card/40 scroll-mt-24">
+          <div className="mx-auto w-full max-w-7xl">
+            <h2 className="mb-8 text-center text-2xl font-bold md:text-3xl">Autonomous Agent Pipeline</h2>
+            <div className="pipeline overflow-x-auto pb-2">
+              <div className="node group">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Monitor</p>
+                <p className="details mt-2 text-sm text-muted-foreground">Tracks telemetry and anomalies across all customers.</p>
               </div>
-
-              {/* Feature 2 */}
-              <div className="bg-slate-800/40 border border-white/5 p-8 rounded-2xl flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-                  <Bot className="w-6 h-6 text-indigo-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white">Multi-Agent System</h3>
-                <p className="text-slate-400 leading-relaxed text-sm">
-                  A pipeline of AI agents that analyze behavior, evaluate decisions, 
-                  and act autonomously using LLM orchestration.
-                </p>
+              <div className="connector hidden md:block"><span className="dot" /></div>
+              <div className="node group">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Predict</p>
+                <p className="details mt-2 text-sm text-muted-foreground">Runs churn and CLV models to score customer risk.</p>
               </div>
-
-              {/* Feature 3 */}
-              <div className="bg-slate-800/40 border border-white/5 p-8 rounded-2xl flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-                  <ShieldCheck className="w-6 h-6 text-amber-400" />
-                </div>
-                <h3 className="text-xl font-bold text-white">Automated Retention</h3>
-                <p className="text-slate-400 leading-relaxed text-sm">
-                  Instantly execute retention workflows (Slack, Jira, Email, Twilio Voice) 
-                  when thresholds are breached.
-                </p>
+              <div className="connector hidden md:block"><span className="dot" /></div>
+              <div className="node group">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Decide</p>
+                <p className="details mt-2 text-sm text-muted-foreground">Selects best retention strategy per account context.</p>
               </div>
+              <div className="connector hidden md:block"><span className="dot" /></div>
+              <div className="node group">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Act</p>
+                <p className="details mt-2 text-sm text-muted-foreground">Executes workflows across alerts, tickets, and outreach.</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
+        <section id="features" className="px-6 py-16 scroll-mt-24">
+          <div className="mx-auto w-full max-w-7xl">
+            <h2 className="mb-8 text-2xl font-bold md:text-3xl">Built For High-Risk Retention Ops</h2>
+            <div className="bento">
+              <div className="big">
+                <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Model Confidence</p>
+                <div className="mt-4 flex items-end gap-3">
+                  <p className="text-6xl font-extrabold md:text-7xl">&gt;85%</p>
+                  <p className="mb-2 text-muted-foreground">churn prediction accuracy on benchmark datasets</p>
+                </div>
+                <p className="mt-3 max-w-2xl text-sm text-muted-foreground">Powered by Random Forest and anomaly detection tuned for SaaS customer behavior signals.</p>
+              </div>
+              <div className="rounded-xl border-2 border-border bg-card p-5">
+                <p className="mb-3 text-sm font-semibold">Integrations</p>
+                <div className="chips">
+                  <span className="chip"><MessageSquare className="h-4 w-4" /> Slack</span>
+                  <span className="chip"><Ticket className="h-4 w-4" /> Jira</span>
+                  <span className="chip"><Mail className="h-4 w-4" /> Email</span>
+                  <span className="chip"><PhoneCall className="h-4 w-4" /> Twilio</span>
+                </div>
+              </div>
+              <div className="rounded-xl border-2 border-border bg-card p-5">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Risk Indicators</p>
+                <p className="mt-3 text-sm text-muted-foreground">Danger states are highlighted with <span className="font-semibold text-destructive">destructive</span> to surface churn escalation instantly.</p>
+              </div>
             </div>
           </div>
         </section>
       </main>
-      
-      <footer className="py-8 text-center text-slate-500 text-sm border-t border-white/5">
-        <p>SIM-OPS &copy; {new Date().getFullYear()}. Built for modern operations.</p>
+
+      <footer id="access" className="relative z-10 footer-cta border-t-2 border-border bg-card scroll-mt-24">
+        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 md:flex-row">
+          <p className="text-sm text-muted-foreground">Ready to prevent churn before it starts?</p>
+          <Button className="border-0 bg-primary text-primary-foreground hover:bg-primary/90">
+            Request Access
+            <ChevronRight className="ml-1.5 h-4 w-4" />
+          </Button>
+        </div>
       </footer>
     </div>
   );
