@@ -23,7 +23,7 @@ def draw_architecture():
         (1, 5, 2.5, 2, 'Data Ingestion\nLayer\n(Stripe, CRM)'),
         (4, 5, 2.5, 2, 'Machine Learning\nService\n(XGBoost, IF)'),
         (7, 5, 2.5, 2, 'Action Execution\nLayer\n(Slack, Jira)'),
-        (2.5, 1, 5, 3, 'Multi-Agent Orchestration Layer\n(Monitoring, Prediction, Decision,\nAction, Reporting, Feedback)')
+        (1, 1, 8.5, 3, 'Multi-Agent Orchestration Layer\n(Monitoring, Prediction, Decision,\nAction, Reporting, Feedback)')
     ]
     
     for x, y, w, h, text in boxes:
