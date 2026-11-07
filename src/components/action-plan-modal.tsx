@@ -51,7 +51,8 @@ export function ActionPlanModal({
     const effort = isHighPriority ? "Medium" : isMediumPriority ? "Low" : "Low";
 
     // Generate action title
-    const actionTitle = (action || "Action Plan").split('.')[0].substring(0, 80);
+    const actionTitle =
+        (action || "Action Plan").split(".")[0]?.substring(0, 80) || "Action Plan";
 
     // Determine action type and generate specific plan
     const actionLower = (action || "").toLowerCase();

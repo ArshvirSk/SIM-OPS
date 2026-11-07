@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        NEXT_PUBLIC_ML_SERVICE_URL: ${NEXT_PUBLIC_ML_SERVICE_URL:-http://localhost:8000}
+    image: simops-app:latest
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_ML_SERVICE_URL: ${NEXT_PUBLIC_ML_SERVICE_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    depends_on:
+      ml:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  ml:
+    build:
+      context: ./ml-service
+    image: simops-ml-service:latest
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  scheduler:
+    image: simops-app:latest
+    command: ["node", "local-scheduler.js"]
+    env_file:
+      - .env.local
+    environment:
+      BASE_URL: http://app:3000
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped

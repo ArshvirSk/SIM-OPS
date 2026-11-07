@@ -223,7 +223,7 @@ export function WhatIfScenarioBuilder({
                                         step={0.1}
                                         value={[scenario.parameters.churnRate]}
                                         onValueChange={(value) =>
-                                            handleParameterChange("churnRate", value[0])
+                                            handleParameterChange("churnRate", value[0] ?? 0)
                                         }
                                         className="w-full"
                                     />
@@ -244,7 +244,7 @@ export function WhatIfScenarioBuilder({
                                         step={1}
                                         value={[scenario.parameters.revenueGrowth]}
                                         onValueChange={(value) =>
-                                            handleParameterChange("revenueGrowth", value[0])
+                                            handleParameterChange("revenueGrowth", value[0] ?? 0)
                                         }
                                         className="w-full"
                                     />
@@ -264,7 +264,7 @@ export function WhatIfScenarioBuilder({
                                         step={50}
                                         value={[scenario.parameters.customerAcquisitionCost]}
                                         onValueChange={(value) =>
-                                            handleParameterChange("customerAcquisitionCost", value[0])
+                                            handleParameterChange("customerAcquisitionCost", value[0] ?? 0)
                                         }
                                         className="w-full"
                                     />
@@ -284,7 +284,7 @@ export function WhatIfScenarioBuilder({
                                         step={1000}
                                         value={[scenario.parameters.retentionBudget]}
                                         onValueChange={(value) =>
-                                            handleParameterChange("retentionBudget", value[0])
+                                            handleParameterChange("retentionBudget", value[0] ?? 0)
                                         }
                                         className="w-full"
                                     />
@@ -304,7 +304,7 @@ export function WhatIfScenarioBuilder({
                                         step={5}
                                         value={[scenario.parameters.agentAutomationRate]}
                                         onValueChange={(value) =>
-                                            handleParameterChange("agentAutomationRate", value[0])
+                                            handleParameterChange("agentAutomationRate", value[0] ?? 0)
                                         }
                                         className="w-full"
                                     />
@@ -316,7 +316,10 @@ export function WhatIfScenarioBuilder({
                         </Card>
 
                         {/* Projected Outcomes */}
-                        {scenario.outcomes || (scenario.outcomes = calculateOutcomes(scenario.parameters))} && (
+                        {Boolean(
+                            scenario.outcomes ||
+                            (scenario.outcomes = calculateOutcomes(scenario.parameters))
+                        ) && (
                         <Card>
                             <CardHeader>
                                 <CardTitle>Projected Outcomes</CardTitle>
@@ -366,7 +369,7 @@ export function WhatIfScenarioBuilder({
                                 </div>
                             </CardContent>
                         </Card>
-            )}
+                        )}
 
                         {/* Actions */}
                         <div className="flex gap-2">

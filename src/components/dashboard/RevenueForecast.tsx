@@ -97,7 +97,20 @@ export function RevenueForecast() {
         forecast_periods: periods,
       });
 
-      setForecast(result);
+      setForecast({
+        ...result,
+        predictions: result.predictions.map((prediction) => ({
+          date: prediction.date,
+          predicted_revenue: prediction.predicted_value,
+          day_offset: prediction.period,
+        })),
+        confidence_intervals: result.confidence_intervals.map((interval) => ({
+          date: historical[interval.period]?.date || "",
+          lower_bound: interval.lower_bound,
+          upper_bound: interval.upper_bound,
+          confidence_level: 0,
+        })),
+      });
     } catch (error) {
       console.error("Revenue forecast failed:", error);
     } finally {

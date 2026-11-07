@@ -533,7 +533,7 @@ export class ActionExecutor {
                         From: twilioPhoneNumber,
                         Twiml: twiml,
                         StatusCallback: `${process.env.NEXT_PUBLIC_APP_URL}/api/twilio/status`,
-                        StatusCallbackEvent: ["initiated", "ringing", "answered", "completed"],
+                        StatusCallbackEvent: "initiated ringing answered completed",
                         StatusCallbackMethod: "POST",
                     }),
                 }

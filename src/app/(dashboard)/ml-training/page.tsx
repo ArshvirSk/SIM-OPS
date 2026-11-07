@@ -426,11 +426,11 @@ export default function MLTrainingPage() {
                             </>
                           )}
                           
-                          {model.info.last_updated && (
+                          {model.info.trained_at && (
                             <>
                               <span className="text-muted-foreground">Updated:</span>
                               <span className="text-right">
-                                {new Date(model.info.last_updated).toLocaleDateString()}
+                                {new Date(model.info.trained_at).toLocaleDateString()}
                               </span>
                             </>
                           )}

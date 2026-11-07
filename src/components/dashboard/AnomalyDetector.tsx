@@ -26,7 +26,7 @@ function buildFallbackSeries() {
     const date = new Date();
     date.setDate(date.getDate() - (FALLBACK_POINTS - 1 - i));
     date.setHours(0, 0, 0, 0);
-    return date.toISOString().split("T")[0];
+    return date.toISOString().split("T")[0] ?? "";
   });
 
   const baseValue = 5000;
@@ -101,7 +101,7 @@ export function AnomalyDetector() {
         const d = new Date();
         d.setDate(d.getDate() - (FALLBACK_POINTS - 1 - i));
         d.setHours(0, 0, 0, 0);
-        return d.toISOString().split("T")[0]; // "YYYY-MM-DD"
+        return d.toISOString().split("T")[0] ?? ""; // "YYYY-MM-DD"
       });
 
       const startDate = new Date();
@@ -123,6 +123,7 @@ export function AnomalyDetector() {
         for (const tx of txData) {
           if (!tx.created_at) continue;
           const day = tx.created_at.split("T")[0];
+          if (!day) continue;
           buckets[day] = (buckets[day] || 0) + (tx.amount || 0);
         }
         values = days.map((d) => buckets[d] ?? 0);
@@ -160,7 +161,7 @@ export function AnomalyDetector() {
           return acc;
         }, []);
         const anomalyScores = anomalyIndices.map((i) =>
-          Math.abs(values[i] - mean) / (stdDev || 1),
+          Math.abs((values[i] ?? 0) - mean) / (stdDev || 1),
         );
         result = {
           anomalies_detected: anomalyIndices.length > 0,

@@ -25,8 +25,11 @@ export interface ChurnFeatures {
 export interface ChurnPredictionResponse {
   customer_id: string;
   churn_probability: number;
-  risk_segment: "low" | "medium" | "high" | "critical";
-  factors: ChurnFactor[];
+  risk_level?: "low" | "medium" | "high" | "critical";
+  risk_segment?: "low" | "medium" | "high" | "critical";
+  contributing_factors?: ChurnFactor[];
+  recommended_actions?: string[];
+  factors?: ChurnFactor[];
   confidence: number;
 }
 
@@ -134,10 +137,12 @@ export interface ModelTrainingRequest {
   hyperparameters?: Record<string, number | string | boolean>;
 }
 
-export interface TrainingData {
+export type TrainingData = {
   features: Record<string, unknown>[];
   labels: number[] | string[];
-}
+} | {
+  values: number[];
+};
 
 export interface ModelTrainingResponse {
   status: "success" | "failed";
@@ -169,6 +174,7 @@ export interface ModelInfoResponse {
     mae?: number;
     rmse?: number;
     mape?: number;
+    data_points?: number;
   };
 }
 

@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.env*
+!.env.example
+coverage
+ml-service/.venv
+ml-service/venv
+ml-service/__pycache__
+ml-service/**/*.pyc
+paper
+docs/screenshots
+readme

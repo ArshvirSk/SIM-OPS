@@ -153,7 +153,7 @@ export default function ReportsPage() {
     };
     predictions.forEach((p) => {
       if (counts.hasOwnProperty(p.prediction_type)) {
-        counts[p.prediction_type]++;
+        counts[p.prediction_type] = (counts[p.prediction_type] ?? 0) + 1;
       }
     });
     return Object.entries(counts).map(([name, value]) => ({
@@ -260,11 +260,11 @@ export default function ReportsPage() {
     };
     clvPreds.forEach((p) => {
       const clv = (p.prediction_data as any)?.predicted_clv || 0;
-      if (clv < 10000) bins["<$10K"]++;
-      else if (clv < 25000) bins["$10K-$25K"]++;
-      else if (clv < 50000) bins["$25K-$50K"]++;
-      else if (clv < 100000) bins["$50K-$100K"]++;
-      else bins[">$100K"]++;
+      if (clv < 10000) bins["<$10K"] = (bins["<$10K"] ?? 0) + 1;
+      else if (clv < 25000) bins["$10K-$25K"] = (bins["$10K-$25K"] ?? 0) + 1;
+      else if (clv < 50000) bins["$25K-$50K"] = (bins["$25K-$50K"] ?? 0) + 1;
+      else if (clv < 100000) bins["$50K-$100K"] = (bins["$50K-$100K"] ?? 0) + 1;
+      else bins[">$100K"] = (bins[">$100K"] ?? 0) + 1;
     });
     return Object.entries(bins).map(([range, count]) => ({
       range,
@@ -318,9 +318,10 @@ export default function ReportsPage() {
     };
 
     predictions.forEach((p) => {
-      if (models[p.prediction_type]) {
-        models[p.prediction_type].count++;
-        models[p.prediction_type].avgConfidence += p.confidence;
+      const model = models[p.prediction_type];
+      if (model) {
+        model.count++;
+        model.avgConfidence += p.confidence;
       }
     });
 

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
         console.log(`📞 Twilio response received: Digits=${digits}, CallSid=${callSid}`);
 
-        const supabase = createClient();
+        const supabase = await createClient();
 
         // Log the response
         await supabase.from("activity_logs").insert({

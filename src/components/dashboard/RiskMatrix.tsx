@@ -30,7 +30,7 @@ import { useState } from "react";
 /**
  * Risk item structure representing an identified risk
  */
-interface RiskItem {
+export interface RiskItem {
     id: string;
     name: string;
     description?: string;
@@ -252,10 +252,11 @@ export function RiskMatrix({
                                                     className={`w-40 min-h-[120px] border border-slate-200 p-2 text-left transition-all hover:shadow-lg dark:border-slate-700 ${severity >= 12 ? "cursor-pointer" : ""
                                                         }`}
                                                     onClick={() => {
-                                                        if (cellRisks.length > 0) {
-                                                            setSelectedRisk(cellRisks[0]);
-                                                        }
-                                                    }}
+                                                            const firstRisk = cellRisks[0];
+                                                            if (firstRisk) {
+                                                                setSelectedRisk(firstRisk);
+                                                            }
+                                                        }}
                                                 >
                                                     {/* Severity Badge */}
                                                     <div
@@ -276,7 +277,7 @@ export function RiskMatrix({
                                                     {cellRisks.length > 0 && (
                                                         <div className="mt-2 border-t border-slate-200 pt-2 dark:border-slate-700">
                                                             <p className="truncate text-xs font-medium text-slate-700 dark:text-slate-300">
-                                                                {cellRisks[0].name}
+                                                                {cellRisks[0]?.name}
                                                             </p>
                                                             {cellRisks.length > 1 && (
                                                                 <p className="text-xs text-slate-500 dark:text-slate-400">

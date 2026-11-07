@@ -120,8 +120,16 @@ export interface WorkflowConnection {
 
 // Node execution context with typed outputs
 export type NodeExecutionContext = {
-  [nodeId: string]: NodeOutput;
+  [nodeId: string]: NodeOutput | WorkflowMeta;
 };
+
+export interface WorkflowMeta {
+  id: string;
+  name: string;
+  runCount: number;
+  totalNodes: number;
+  startedAt: string;
+}
 
 // Discriminated union for node outputs
 export type NodeOutput =

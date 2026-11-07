@@ -5,7 +5,7 @@
  * for the RiskMatrix component.
  */
 
-import { RiskMatrix } from "@/components/dashboard/RiskMatrix";
+import { RiskItem, RiskMatrix } from "@/components/dashboard/RiskMatrix";
 
 /**
  * Mock Risk Data for Testing/Development
@@ -160,7 +160,7 @@ export const MOCK_RISKS = [
  * Add to: src/app/(dashboard)/page.tsx
  */
 export function RiskMatrixExample() {
-    const handleRiskSelect = (risk: typeof MOCK_RISKS[0]) => {
+    const handleRiskSelect = (risk: RiskItem) => {
         console.log("Risk selected:", risk);
         // Open risk detail modal or navigate to risk detail page
     };
@@ -211,7 +211,7 @@ export function RiskMatrixExample() {
  *   
  *   return (
  *     <div className="space-y-10">
- *       {/* ... other components ... */}
+ *       [other components]
  *       
  * <RiskMatrix
  * risks={ risks }

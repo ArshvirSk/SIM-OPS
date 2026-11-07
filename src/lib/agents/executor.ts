@@ -114,7 +114,12 @@ export class AgentExecutor {
         ((metrics.churnRate - churnThreshold) / churnThreshold) *
         100
       ).toFixed(1);
-      severity = metrics.churnRate > churnThreshold * 1.3 ? "high" : "medium";
+      severity =
+        metrics.churnRate > churnThreshold * 1.6
+          ? "critical"
+          : metrics.churnRate > churnThreshold * 1.3
+            ? "high"
+            : "medium";
       decision = `Churn rate exceeds threshold: ${metrics.churnRate.toFixed(1)}% > ${churnThreshold}%`;
       reasoning = `Current churn rate is ${deviation}% above threshold. ${stripeConfig ? "Data from Stripe." : "Using mock data."} This requires immediate attention.`;
       output = `ALERT: High churn deviation detected. Escalating to Decision Agent.`;

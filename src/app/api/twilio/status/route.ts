@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
         console.log(`📞 Twilio status update: ${callStatus} for call ${callSid}`);
 
-        const supabase = createClient();
+        const supabase = await createClient();
 
         // Log the status update
         await supabase.from("activity_logs").insert({

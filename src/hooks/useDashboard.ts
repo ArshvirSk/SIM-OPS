@@ -321,14 +321,19 @@ export function useDashboardCharts() {
           end: new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59).toISOString(),
         };
       });
+      const firstMonth = months[0];
+      const lastMonth = months[5];
+      if (!firstMonth || !lastMonth) {
+        throw new Error("Unable to create monthly dashboard range");
+      }
 
       // Fetch 6 months of transactions in one query
       const { data: transactions } = await supabase
         .from("transactions")
         .select("amount, created_at")
         .eq("status", "completed")
-        .gte("created_at", months[0].start)
-        .lte("created_at", months[5].end);
+        .gte("created_at", firstMonth.start)
+        .lte("created_at", lastMonth.end);
 
       // Fetch all customers with their created_at and status for churn calc
       const { data: customers } = await supabase
